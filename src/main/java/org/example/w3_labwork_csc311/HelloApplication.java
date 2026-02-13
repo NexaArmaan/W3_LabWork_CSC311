@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 380, 300);
-        //stage.setTitle("Hello!");
+        stage.setTitle("Loan Calculator");
         GridPane gridpane = new GridPane();
 
         Label label1 = new Label("Annual Interest Rate");
@@ -53,7 +53,7 @@ public class HelloApplication extends Application {
         GridPane.setConstraints(total,1,4);
         total.setEditable(false);
 
-        Button button = new Button("Click!");
+        Button button = new Button("Calculate!");
         button.setOnAction(this::processButtonPress);
         GridPane.setConstraints(button,1,5);
 
@@ -69,14 +69,26 @@ public class HelloApplication extends Application {
     }
 
     public void processButtonPress(ActionEvent event){
-        double P = loan;
-        double annualRate = annualInterest / 100;
-        double r = annualRate / 12;
+        double annualInterest = Double.parseDouble(air.getText());
+        int years = Integer.parseInt(yrs.getText());
+        double P = Double.parseDouble(loan.getText());
+
+        double annualRate = annualInterest / 100.0;
+        double r = annualRate / 12.0;
         int n = years * 12;
 
-        double M = P * (r * Math.pow(1 + r, n))
-                / (Math.pow(1 + r, n) - 1);
+        double M;
 
+        if (r == 0) {
+            M = P / n;
+        } else {
+            M = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+        }
+
+        double totalPayment = M * n;
+
+        monPay.setText(String.format("%.2f", M));
+        total.setText(String.format("%.2f", totalPayment));
     }
 
     public static void main(String[] args) {
