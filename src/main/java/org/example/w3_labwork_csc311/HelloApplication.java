@@ -69,26 +69,30 @@ public class HelloApplication extends Application {
     }
 
     public void processButtonPress(ActionEvent event){
-        double annualInterest = Double.parseDouble(air.getText());
-        int years = Integer.parseInt(yrs.getText());
-        double P = Double.parseDouble(loan.getText());
+        try {
+            double annualInterest = Double.parseDouble(air.getText());
+            int years = Integer.parseInt(yrs.getText());
+            double P = Double.parseDouble(loan.getText());
 
-        double annualRate = annualInterest / 100.0;
-        double r = annualRate / 12.0;
-        int n = years * 12;
+            double annualRate = annualInterest / 100.0;
+            double r = annualRate / 12.0;
+            int n = years * 12;
 
-        double M;
+            double M;
 
-        if (r == 0) {
-            M = P / n;
-        } else {
-            M = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            if (r == 0) {
+                M = P / n;
+            } else {
+                M = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            }
+
+            double totalPayment = M * n;
+
+            monPay.setText(String.format("%.2f", M));
+            total.setText(String.format("%.2f", totalPayment));
+        } catch (Exception e) {
+            total.setText("Invalid");
         }
-
-        double totalPayment = M * n;
-
-        monPay.setText(String.format("%.2f", M));
-        total.setText(String.format("%.2f", totalPayment));
     }
 
     public static void main(String[] args) {
